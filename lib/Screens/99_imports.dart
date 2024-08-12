@@ -22,3 +22,4 @@ export '/../../Widgets/02_Main_Buttons/06.dart';
 export '/../../Widgets/02_Main_Buttons/07.dart';
 export '/../../Widgets/02_Main_Buttons/08.dart';
 export '../Widgets/navigation.dart';
+export '../utils/products.dart';

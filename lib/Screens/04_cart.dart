@@ -9,7 +9,7 @@ class CartPage extends StatefulWidget {
   final List<Product> products;
   final VoidCallback clearCartCallback; // Add this line
 
-  CartPage({required this.products, required this.clearCartCallback});
+  CartPage({required this.products, required this.clearCartCallback, required String title});
 
   @override
   _CartPageState createState() => _CartPageState();

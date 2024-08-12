@@ -42,12 +42,12 @@ class _InterfacePageState extends State<InterfacePage> {
                 _selectedIndex = index;
               });
             },
-            children: const <Widget>[
-              EntreePage(title: 'Entree'),
-              MainPage(title: 'Home'),
-              DessertPage(title: 'Dessert'),
-              CartPage(title: 'Cart'),
-              AiPage(title: 'AI'),
+            children: <Widget>[
+              const EntreePage(title: 'Entree'),
+              const MainPage(title: 'Home'),
+              const DessertPage(title: 'Dessert'),
+              CartPage(products: [], title: 'Cart', clearCartCallback: () {  },),
+              const AiPage(title: 'AI'),
             ],
           ),
           const Positioned(
