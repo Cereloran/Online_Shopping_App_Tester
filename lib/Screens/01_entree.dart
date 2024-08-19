@@ -1,9 +1,8 @@
 import '99_imports.dart';
-import '../Widgets/01_Entree_Buttons/01_entree.dart';
-import '../Widgets/01_Entree_Buttons/02_entree.dart';
 
 class EntreePage extends StatefulWidget {
   const EntreePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -11,19 +10,31 @@ class EntreePage extends StatefulWidget {
 }
 
 class _EntreePageState extends State<EntreePage> {
-  int _selectedIndex = 0;
+  Set<int> pressedButtons = {};
+  List<Product> cartProducts = [];
 
-  void _onItemTapped(int index) {
+  void _onButtonPressed(int index) {
     setState(() {
-      _selectedIndex = index;
+      if (pressedButtons.contains(index)) {
+        pressedButtons.remove(index);
+      } else {
+        pressedButtons.add(index);
+        _addToCart(entrees[index]);
+      }
     });
   }
 
-  void _navigateToTestPage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MainPage(title: 'egg')),
-    );
+  void _addToCart(Product product) {
+    setState(() {
+      var existingProduct = cartProducts.firstWhere(
+            (item) => item.productName == product.productName,
+        orElse: () {
+          cartProducts.add(product);
+          return product;
+        },
+      );
+      existingProduct.quantity++;
+    });
   }
 
   @override
@@ -44,71 +55,40 @@ class _EntreePageState extends State<EntreePage> {
                 double buttonSize = (constraints.maxWidth / 2) - 20;
 
                 return Padding(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: GridView.count(
-                    crossAxisCount: 2,
+                  padding: const EdgeInsets.only(top: 20),
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 15,
+                    ),
                     padding: const EdgeInsets.all(30),
-                    mainAxisSpacing: 15,
-                    crossAxisSpacing: 15,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      Center(
+                    itemCount: entrees.length,
+                    itemBuilder: (context, index) {
+                      final product = entrees[index];
+                      return Center(
                         child: SizedBox(
-                          width: buttonSize + 50,
-                          height: buttonSize - 20,
-                          child: const Button1_entree(),
+                          width: buttonSize,
+                          height: buttonSize,
+                          child: Card(
+                            color: pressedButtons.contains(index)
+                                ? Colors.green
+                                : Colors.white,
+                            child: InkWell(
+                              onTap: () => _onButtonPressed(index),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(product.imagePath, height: 80, width: 80),
+                                  Text(product.productName),
+                                  Text('\$${product.productPrice.toStringAsFixed(2)}'),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 10,
-                          height: buttonSize - 20,
-                          child: const Button2_entree(),
-                        ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 10,
-                          height: buttonSize - 20,
-                          child: const Button3_entree(),
-                        ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 10,
-                          height: buttonSize - 20,
-                          child: const Button4_entree(),
-                        ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 10,
-                          height: buttonSize - 20,
-                          child: const Button5_entree(),
-                        ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 10,
-                          height: buttonSize - 20,
-                          child: const Button6_entree(),
-                        ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 10,
-                          height: buttonSize - 20,
-                          child: const Button7_entree(),
-                        ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 10,
-                          height: buttonSize - 20,
-                          child: const Button8_entree(),
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 );
               },

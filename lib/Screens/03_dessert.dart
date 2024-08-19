@@ -9,19 +9,31 @@ class DessertPage extends StatefulWidget {
 }
 
 class _DessertPageState extends State<DessertPage> {
-  int _selectedIndex = 0;
+  Set<int> pressedButtons = {};
+  List<Product> cartProducts = [];
 
-  void _onItemTapped(int index) {
+  void _onButtonPressed(int index) {
     setState(() {
-      _selectedIndex = index;
+      if (pressedButtons.contains(index)) {
+        pressedButtons.remove(index);
+      } else {
+        pressedButtons.add(index);
+        _addToCart(desserts[index]);
+      }
     });
   }
 
-  void _navigateToTestPage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MainPage(title: 'egg',)),
-    );
+  void _addToCart(Product product) {
+    setState(() {
+      var existingProduct = cartProducts.firstWhere(
+            (item) => item.productName == product.productName,
+        orElse: () {
+          cartProducts.add(product);
+          return product;
+        },
+      );
+      existingProduct.quantity++;
+    });
   }
 
   @override
@@ -42,29 +54,40 @@ class _DessertPageState extends State<DessertPage> {
                 double buttonSize = (constraints.maxWidth / 2) - 20;
 
                 return Padding(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: GridView.count(
-                    crossAxisCount: 2,
+                  padding: const EdgeInsets.only(top: 20),
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 15,
+                    ),
                     padding: const EdgeInsets.all(30),
-                    mainAxisSpacing: 15,
-                    crossAxisSpacing: 15,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      Center(
+                    itemCount: desserts.length,
+                    itemBuilder: (context, index) {
+                      final product = desserts[index];
+                      return Center(
                         child: SizedBox(
-                          width: buttonSize + 50,
-                          height: buttonSize - 20,
-                          child: const Button1(),
+                          width: buttonSize,
+                          height: buttonSize,
+                          child: Card(
+                            color: pressedButtons.contains(index)
+                                ? Colors.green
+                                : Colors.white,
+                            child: InkWell(
+                              onTap: () => _onButtonPressed(index),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(product.imagePath, height: 80, width: 80),
+                                  Text(product.productName),
+                                  Text('\$${product.productPrice.toStringAsFixed(2)}'),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 10,
-                          height: buttonSize - 20,
-                          child: const Button2(),
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 );
               },
