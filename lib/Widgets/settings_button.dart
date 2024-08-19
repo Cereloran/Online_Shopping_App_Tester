@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../Screens/09_settings.dart';
+import '../Screens/09_settings.dart';
 
 class Settings_Button extends StatelessWidget {
   const Settings_Button({super.key});

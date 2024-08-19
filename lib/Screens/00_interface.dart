@@ -1,5 +1,3 @@
-import 'package:HCDAss3/Screens/04_cart.dart';
-
 import '99_imports.dart';
 
 class InterfacePage extends StatefulWidget {
@@ -43,18 +41,37 @@ class _InterfacePageState extends State<InterfacePage> {
               });
             },
             children: <Widget>[
-              const EntreePage(title: 'Entree'),
+              const EntreePage(title: 'Entrees'),
               const MainPage(title: 'Home'),
               const DessertPage(title: 'Dessert'),
-              CartPage(title: 'Cart', products: [], clearCartCallback: () {  },),
               const AiPage(title: 'AI'),
+              CartPage(
+                title: 'Cart',
+                products: Provider.of<CartProvider>(context).cartProducts,
+                clearCartCallback: () {
+                  Provider.of<CartProvider>(context, listen: false).clearCart();
+                },
+              ),
+
             ],
           ),
           const Positioned(
             top: 30,
-            right: -5,
-            child: Settings_Button(),
-          ),
+            right: 10,
+            child: Column(
+              children: [
+                Settings_Button(),
+                Text(
+                  'Accessibility',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
       bottomNavigationBar: Navigation(

@@ -28,23 +28,29 @@ class SettingsPage extends StatelessWidget {
         child: ListView(
           children: const [
             ListTile(
-              leading: Icon(Icons.account_circle_outlined),
-              title: Text('Account'),
-              subtitle: Text('Manage your account settings'),
+              leading: Icon(Icons.speaker),
+              title: Text('Text To Speech'),
+              subtitle: Text('Manage your text to speech settings'),
             ),
             ListTile(
-              leading: Icon(Icons.notifications_outlined),
-              title: Text('Notification preferences'),
+              leading: Icon(Icons.contrast_outlined),
+              title: Text('High Contrast'),
+              subtitle: Text('High Contrast mode preferences'),
+            ),
+            ListTile(
+              leading: Icon(Icons.contrast_outlined),
+              title: Text('Colour Blind Mode'),
+              subtitle: Text('Change the colours so that they are more discernable for colour blindness'),
             ),
             ListTile(
               leading: Icon(Icons.lock_outline),
-              title: Text('Privacy'),
-              subtitle: Text('Privacy settings'),
+              title: Text('Language'),
+              subtitle: Text('Language Preferences settings'),
             ),
             ListTile(
-              leading: Icon(Icons.email_outlined),
+              leading: Icon(Icons.call_outlined),
               title: Text('Help & Support'),
-              subtitle: Text('Get help and support'),
+              subtitle: Text('Get help and support from a waiter'),
             ),
           ],
         ),

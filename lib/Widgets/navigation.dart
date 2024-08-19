@@ -28,10 +28,6 @@ class Navigation extends StatelessWidget {
           label: 'Dessert',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart_outlined),
-          label: 'Cart',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.chat_outlined),
           label: 'Ai',
         ),
