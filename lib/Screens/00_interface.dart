@@ -8,7 +8,7 @@ class InterfacePage extends StatefulWidget {
 }
 
 class _InterfacePageState extends State<InterfacePage> {
-  int _selectedIndex = 1; // Default to Home Page
+  int _selectedIndex = 0; // Default to Home Page
   late PageController _pageController;
 
   @override
@@ -42,9 +42,9 @@ class _InterfacePageState extends State<InterfacePage> {
             },
             children: <Widget>[
               const EntreePage(title: 'Entrees'),
-              const MainPage(title: 'Home'),
+              const MainPage(title: 'Mains'),
               const DessertPage(title: 'Dessert'),
-              const AiPage(title: 'AI'),
+              AiPage(title: 'AI Recommendations'),
               CartPage(
                 title: 'Cart',
                 products: Provider.of<CartProvider>(context).cartProducts,

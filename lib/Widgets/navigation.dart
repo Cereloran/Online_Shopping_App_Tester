@@ -28,16 +28,18 @@ class Navigation extends StatelessWidget {
           label: 'Dessert',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.chat_outlined),
+          icon: Icon(Icons.auto_awesome_outlined),
           label: 'Ai',
         ),
       ],
       currentIndex: selectedIndex,
       unselectedItemColor: const Color(0xFF468876),
       selectedItemColor: const Color(0xFF3AB794),
-      unselectedIconTheme: const IconThemeData(size: 20),
+      unselectedIconTheme: const IconThemeData(size: 15),
       selectedIconTheme: const IconThemeData(size: 25),
       onTap: onItemTapped,
+      showUnselectedLabels: true,
+      showSelectedLabels: true,
     );
   }
 }

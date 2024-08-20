@@ -1,86 +1,158 @@
 import '99_imports.dart';
 
 class AiPage extends StatefulWidget {
-  const AiPage({super.key, required this.title});
   final String title;
+
+  AiPage({
+    super.key,
+    required this.title,
+  });
 
   @override
   State<AiPage> createState() => _AiPageState();
 }
 
 class _AiPageState extends State<AiPage> {
-  void _navigateToPage(BuildContext context, Widget page) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
+  Set<int> pressedButtons = {};
+
+  void _onButtonPressed(int index) {
+    setState(() {
+      if (pressedButtons.contains(index)) {
+        pressedButtons.remove(index);
+      } else {
+        pressedButtons.add(index);
+        Provider.of<CartProvider>(context, listen: false).addToCart(recommendations[index]);
+      }
+    });
+    print('Pressed Buttons: $pressedButtons');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFFcdf0e4), Color(0xFFE0FBE2)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+          Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: Text(
+              widget.title,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                double buttonSize = (constraints.maxWidth / 2) - 20;
-
-                return Padding(
-                  padding: const EdgeInsets.only(top: 0),
-                  child: GridView.count(
-                    crossAxisCount: 1,
-                    padding: const EdgeInsets.all(90),
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 0,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 100,
-                          height: buttonSize - 20,
-                          child: ElevatedButton(
-                            onPressed: () => _navigateToPage(context, const MainPage(title: 'Main')),
-                            child: const Text('AI Mains Recommendations'),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 50,
-                          height: buttonSize - 20,
-                          child: ElevatedButton(
-                            onPressed: () => _navigateToPage(context, const EntreePage(title: 'Entree')),
-                            child: const Text('AI Entree Recommendations'),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: buttonSize + 50,
-                          height: buttonSize - 20,
-                          child: ElevatedButton(
-                            onPressed: () => _navigateToPage(context, const DessertPage(title: 'Dessert')),
-                            child: const Text('AI Dessert Recommendations'),
-                          ),
-                        ),
-                      ),
-                    ],
+          ),
+          Expanded(
+            child: Stack(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFFcdf0e4), Color(0xFFE0FBE2)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
-                );
-              },
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      double buttonSize = (constraints.maxWidth / 2) - 20;
+
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                          ),
+                          padding: const EdgeInsets.all(40),
+                          itemCount: recommendations.length,
+                          itemBuilder: (context, index) {
+                            final product = recommendations[index];
+                            return Center(
+                              child: SizedBox(
+                                width: buttonSize,
+                                height: buttonSize,
+                                child: Card(
+                                  color: pressedButtons.contains(index)
+                                      ? Colors.green
+                                      : Colors.white,
+                                  child: InkWell(
+                                    onTap: () => _onButtonPressed(index),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(product.imagePath, height: 80, width: 80),
+                                        Text(product.productName),
+                                        Text('\$${product.productPrice.toStringAsFixed(2)}'),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
       backgroundColor: const Color(0xFFcdf0e4),
+      floatingActionButton: Consumer<CartProvider>(
+        builder: (context, cart, child) {
+          return Stack(
+            alignment: Alignment.topRight,
+            children: [
+              FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CartPage(
+                        title: 'Cart',
+                        products: cart.cartProducts,
+                        clearCartCallback: () {
+                          cart.clearCart();
+                        },
+                      ),
+                    ),
+                  );
+                },
+                child: Icon(Icons.shopping_cart),
+              ),
+              Positioned(
+                top: 37.5,
+                right: 4.5,
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 45,
+                    minHeight: 18,
+                  ),
+                  child: Text(
+                    '\$${cart.totalValue.toStringAsFixed(2)}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

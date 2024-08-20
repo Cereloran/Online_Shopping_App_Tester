@@ -100,53 +100,55 @@ class _DessertPageState extends State<DessertPage> {
         ],
       ),
       backgroundColor: const Color(0xFFcdf0e4),
-      floatingActionButton: Consumer<CartProvider>(
-        builder: (context, cart, child) {
-          return Stack(
-            children: [
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CartPage(
-                        title: 'Cart',
-                        products: cart.cartProducts,
-                        clearCartCallback: () {
-                          cart.clearCart();
-                        },
+        floatingActionButton: Consumer<CartProvider>(
+          builder: (context, cart, child) {
+            return Stack(
+              alignment: Alignment.topRight,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartPage(
+                          title: 'Cart',
+                          products: cart.cartProducts,
+                          clearCartCallback: () {
+                            cart.clearCart();
+                          },
+                        ),
                       ),
+                    );
+                  },
+                  child: Icon(Icons.shopping_cart),
+                ),
+                Positioned(
+                  top: 37.5,
+                  right: 4.5,
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  );
-                },
-                child: Icon(Icons.shopping_cart),
-              ),
-              Positioned(
-                right: 0,
-                child: Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
-                  ),
-                  child: Text(
-                    '${cart.cartProducts.length}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
+                    constraints: BoxConstraints(
+                      minWidth: 45,
+                      minHeight: 18,
                     ),
-                    textAlign: TextAlign.center,
+                    child: Text(
+                      '\$${cart.totalValue.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
-      ),
+              ],
+            );
+          },
+        )
     );
   }
 }
