@@ -27,7 +27,14 @@ class OrderSuccessPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Success'),
+        title: Text(
+          'Order Sent To Kitchen!',
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.black, // Corrected color property
+          ),
+        ),
         backgroundColor: Colors.green,
         iconTheme: IconThemeData(color: Colors.white),
       ),
@@ -39,7 +46,10 @@ class OrderSuccessPage extends StatelessWidget {
             Center(
               child: Text(
                 'Eat Like an Egyptian',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
               ),
             ),
             Center(
@@ -65,7 +75,9 @@ class OrderSuccessPage extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()), // Allows Scrolling Past bottom
+                physics: BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
+                // Allows Scrolling Past bottom
                 itemCount: products.length,
                 itemBuilder: (context, index) {
                   final product = products[index];
@@ -76,7 +88,8 @@ class OrderSuccessPage extends StatelessWidget {
                       children: [
                         Text(
                           product.productName,
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           '${product.quantity} @ \$${product.productPrice.toStringAsFixed(2)}',
@@ -84,13 +97,50 @@ class OrderSuccessPage extends StatelessWidget {
                         ),
                         Text(
                           '\$${itemTotal.toStringAsFixed(2)}',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                   );
                 },
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Thankyou!',
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green, // Corrected color property
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Your meal will be ready soon!',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'You Paid In Total: ',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '\$${totalAmount.toStringAsFixed(2)}',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             SizedBox(height: 8),
             Row(
@@ -103,20 +153,6 @@ class OrderSuccessPage extends StatelessWidget {
                 Text(
                   '\$${gst.toStringAsFixed(2)}',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Total: ',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '\$${totalAmount.toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
