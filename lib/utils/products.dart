@@ -16,7 +16,7 @@ class Product {
 
   static void addToCart(Product product, List<Product> cartProducts) {
     var existingProduct = cartProducts.firstWhere(
-      (item) => item.productName == product.productName,
+          (item) => item.productName == product.productName,
       orElse: () {
         var newProduct = Product(
           productName: product.productName,
